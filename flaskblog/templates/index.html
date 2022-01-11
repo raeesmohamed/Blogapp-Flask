@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+		
+{% block content %}
+	{% for i in posts.items %}
+		<article class="media content-section">
+      <img class = 'rounded-circle article-img' src = "{{url_for('static', filename = 'profile_pics/' + i.author.image)}}">
+  <div class="media-body">
+
+    <div class="article-metadata">
+      <a class="mr-2" href="{{url_for('user.user_posts', username = i.author.username)}}">{{ i.author.username }}</a>
+      <small class="text-muted">{{ i.date.strftime('%Y-%m-%d') }}</small>
+    </div>
+    <h2><a class="article-title" href="{{url_for('posts.post',post_id = i.id)}}">{{ i.title }}</a></h2>
+    <p class="article-content">{{ i.content }}</p>
+  	</div>
+		</article>
+	{% endfor %}
+  {% for i in posts.iter_pages(left_current=1, left_edge=1, right_edge = 1, right_current=2) %}
+    {% if i %}
+      {% if posts.page == i %}
+        <a class = "btn btn-info mb-4"href="{{url_for('main.index',page = i)}}">{{i}}</a>
+    {% else %}  
+      <a class = "btn btn-outline-info mb-4"href="{{url_for('main.index',page = i)}}">{{i}}</a>
+      {%endif %}
+    {% else %}
+      ...
+    {% endif %}
+  {% endfor %}
+{% endblock %}
